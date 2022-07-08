@@ -13,7 +13,7 @@
         test_security_group_name: "{{ (prefix + '-sg') }}"
         test_keypair_name: "{{ (prefix + '-kp') }}"
         test_network_name: "{{ ( prefix + '-net') }}"
-        test_image: Standard_Fedora_35_latest
+#        test_image: Standard_Fedora_35_latest
 
     - name: Query specific flavor
       openstack.cloud.compute_flavor_info:
@@ -43,7 +43,7 @@
 
       - name: Create Keypair
         include_role:
-          name: opentelekomcloud.keypair
+          name: keypair
         vars:
           keypair_name: "{{ test_keypair_name }}"
           state: "present"
@@ -65,7 +65,7 @@
 
       - name: Create VPC (Router + Net + Subnet)
         include_role:
-          name: opentelekomcloud.vpc
+          name: vpc
         vars:
           network_name: "{{ test_network_name }}"
           state: "present"
@@ -158,7 +158,7 @@
       - name: Try connecting
         retries: 10
         delay: 1
-        command: "ssh -o 'UserKnownHostsFile=/dev/null' -o 'StrictHostKeyChecking=no' linux@{{ server_ip }} -i ~/.ssh/{{ test_keypair_name }}.pem"
+        command: "ssh -o 'UserKnownHostsFile=/dev/null' -o 'StrictHostKeyChecking=no' {{ test_user }}@{{ server_ip }} -i ~/.ssh/{{ test_keypair_name }}.pem"
         tags: ["az=default", "service=compute", "metric=create_server"]
 
       ############
@@ -218,14 +218,14 @@
 
             - name: Delete VPC
               include_role:
-                name: opentelekomcloud.vpc
+                name: vpc
               vars:
                 state: absent
                 network_name: "{{ test_network_name }}"
 
             - name: Delete Keypair
               include_role:
-                name: opentelekomcloud.keypair
+                name: keypair
               vars:
                 keypair_name: "{{ test_keypair_name }}"
                 force_delete_key: true

@@ -1,0 +1,20 @@
+---
+# flavor
+test_flavor: "SCS-2V:2:10"
+test_image: "Ubuntu 21.04"
+test_user: ubuntu
+#test_image: "Fedora 34"
+
+external_network_name: ext01
+
+# cloud_name:
+test_keypair_name: api_monitoring_test
+test_security_group_name: test_sg
+test_server_fqdn: test_scenario.bastion.host
+
+# those hosts are used in the scenario30 to watch latencies
+#watch_hosts:
+#  - host: "https://console.otc.t-systems.com"
+#    name: "console"
+#  - host: "https://docs.otc.t-systems.com"
+#    name: "docs"
